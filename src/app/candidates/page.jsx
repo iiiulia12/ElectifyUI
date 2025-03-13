@@ -13,13 +13,10 @@ const Candidates = () => {
   const contract = useMemo(() => getContract(web3), [web3])
 
   const handleClick = async name => {
-    console.log(name)
     vote(contract, web3, name)
   }
 
   useEffect(() => {
-    console.log(contract)
-
     const fetchCandidates = async () => {
       const candidateData = await getCandidates(contract, web3)
       setCandidates(candidateData)
@@ -27,7 +24,6 @@ const Candidates = () => {
 
     fetchCandidates()
   }, [web3, contract])
-  console.log(candidates)
 
   return (
     <div>
