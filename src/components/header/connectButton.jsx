@@ -19,7 +19,6 @@ export const ConnectButton = () => {
 
   return (
     <>
-      {' '}
       <button
         onClick={async () => {
           await handleClick()
