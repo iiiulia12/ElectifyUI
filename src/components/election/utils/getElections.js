@@ -1,8 +1,14 @@
 import moment from 'moment'
 
 export const getElections = async contract => {
-  const elections = await contract.methods.getElections().call()
+  console.log('getElections')
+  console.log(contract)
+  const elections = await contract.methods.getElectionDetails().call()
+  console.log(elections)
+
   const { 0: names, 1: startDates, 2: endDates } = elections
+
+  console.log(elections)
 
   return names.map((name, index) => ({
     name,

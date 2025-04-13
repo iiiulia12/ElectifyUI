@@ -1,6 +1,7 @@
 import 'app/globals.css'
 import { Header } from 'components/header'
 import { Footer } from 'components/footer'
+import { ReactQueryProvider } from 'reactQueryProvider'
 
 // eslint-disable-next-line react/function-component-definition
 export default function RootLayout({ children }) {
@@ -8,7 +9,9 @@ export default function RootLayout({ children }) {
     <html lang={'en'}>
       <body>
         <Header />
-        <div className={'h-dvh'}>{children}</div>
+        <ReactQueryProvider>
+          <div className={'h-dvh'}>{children}</div>
+        </ReactQueryProvider>
         <Footer />
       </body>
     </html>
