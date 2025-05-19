@@ -9,16 +9,16 @@ export const Header = () => (
       <div className={'text-2xl font-bold mr-8'}>Electify</div>
 
       <div className={'flex items-center space-x-4'}>
-        <Link href={'/'} className={'hover:text-white transition-colors'}>
+        <Link href={'/'} className={'hover:text-deep-ocean transition-colors'}>
           Home
         </Link>
-        <Link href={'/elections'} className={'hover:text-neutral-300 transition-colors'}>
+        <Link href={'/elections'} className={'hover:text-deep-ocean transition-colors'}>
           Elections
         </Link>
-        <Link href={'/candidates'} className={'hover:text-neutral-300 transition-colors'}>
+        <Link href={'/candidates'} className={'hover:text-deep-ocean transition-colors'}>
           Candidates
         </Link>
-        <Link href={'/results'} className={'hover:text-neutral-300 transition-colors'}>
+        <Link href={'/results'} className={'hover:text-deep-ocean transition-colors'}>
           Results
         </Link>
       </div>
