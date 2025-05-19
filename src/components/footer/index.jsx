@@ -1,3 +1,3 @@
 export const Footer = () => (
-  <div className={' flex bg-neutral-800 flex-row w-full h-[10vh] bottom-0 rounded-t-md'}> footer</div>
+  <div className={'fixed bg-blackish-blue/80  flex-row w-full h-[7vh] bottom-0 '}> footer</div>
 )

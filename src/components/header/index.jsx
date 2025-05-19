@@ -5,10 +5,7 @@ export const Header = () => (
   <div className={'fixed top-0 w-full z-50'}>
     <div className={'w-full top-0 absolute h-[9vh]  backdrop-blur-sm'} />
 
-    <div
-      className={
-        ' absolute bg-cloudy/40 text-blackish-blue/70 flex flex-row w-full rounded-b-xl h-[9vh] items-center px-6'
-      }>
+    <div className={' absolute bg-cloudy/5 text-blackish-blue/70 flex flex-row w-full  h-[9vh] items-center px-6'}>
       <div className={'text-2xl font-bold mr-8'}>Electify</div>
 
       <div className={'flex items-center space-x-4'}>
