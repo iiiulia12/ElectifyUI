@@ -16,5 +16,5 @@ body {
   color: var(--foreground);
   background: var(--background);
   font-family: Arial, Helvetica, sans-serif;
-  @apply bg-neutral-50 bg-radial-[at_-80%_-90%] from-neutral-50 to-neutral-500;
+  @apply bg-neutral-50 bg-radial-[at_-80%_-90%] from-neutral-50 to-neutral-300;
 }
