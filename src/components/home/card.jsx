@@ -4,15 +4,15 @@ import Image from 'next/image'
 export const Card = ({ title, description, svg }) => (
   <div
     className={
-      'bg-white/20 rounded-xl h-[52vh] p-6 flex flex-col transition-transform duration-300 hover:-translate-y-1 overflow-hidden'
+      'bg-blackish-blue/20 rounded-xl p-6 flex flex-col transition-transform duration-300 hover:-translate-y-1 '
     }>
-    <h3 className={'text-xl font-semibold text-white/70 mb-4'}>{title}</h3>
+    <div className={'text-3xl font-semibold text-white/80 mb-4'}>{title}</div>
 
-    <p className={'text-midnight-blue text-md leading-relaxed flex-1 overflow-auto mb-4'}>{description}</p>
+    <div className={'text-cloudy text-md my-[5vh]'}>{description}</div>
 
     {svg && (
-      <div className={'relative w-full flex-1'}>
-        <Image src={svg} alt={title} fill style={{ objectFit: 'contain' }} />
+      <div>
+        <Image src={svg} alt={title} className={'h-24 mb-10'} />
       </div>
     )}
   </div>

@@ -1,17 +1,20 @@
 import React, { useEffect, useMemo, useState } from 'react'
-import { notifyNewElection } from 'components/election/utils/notifyNewElection'
-import { getElections } from 'components/election/utils/getElections'
+import { notifyNewElection } from '@/components/elections/notifyNewElection'
 import { getWeb3 } from 'contract/getWeb3'
-import { getContract } from 'contract/getContract'
+import { getContract } from 'contract/election/getContract'
 import { Transition } from '@headlessui/react'
+import { getVotingSystems } from 'contract/election/getVotingSystems'
+import { getContract as getVotingContract } from 'contract/vote/getContract'
 
 export const ElectionList = () => {
   const web3 = useMemo(() => getWeb3(), [])
   const contract = useMemo(() => getContract(web3), [web3])
+  // const votingContract = useMemo(() => getVotingContract(web3), [web3])
 
   const [newElection, setNewElection] = useState([])
   const [elections, setElections] = useState([])
   const [showNotification, setShowNotification] = useState(false)
+  const [votingSystems, setVotingSystems] = useState([])
 
   useEffect(() => {
     if (newElection) {
@@ -33,9 +36,18 @@ export const ElectionList = () => {
   }, [setNewElection, contract])
 
   useEffect(() => {
-    const fetchElections = async () => setElections(await getElections(contract))
-    fetchElections()
-  }, [newElection, contract])
+    const fetchVotingSystems = async () => setVotingSystems(await getVotingSystems(contract))
+    fetchVotingSystems()
+  }, [newElection, contract, web3])
+
+  useEffect(() => {
+    if (votingSystems.length > 0) {
+      const votingContract = getVotingContract(web3, votingSystems[0])
+      console.log(votingContract, 'votingContract')
+      const fetchElections = async () => setElections(await getElections(votingContract))
+      fetchElections()
+    }
+  }, [votingSystems, web3])
 
   return (
     <>
@@ -55,6 +67,12 @@ export const ElectionList = () => {
       {elections.map((election, index) => (
         <div key={index} className={'ml-2'}>
           {election.name} startDate: {election.startDate} endDate: {election.endDate}
+        </div>
+      ))}
+      <div className={'bg-red h-5'}> voting sist</div>
+      {votingSystems.map((voting, index) => (
+        <div key={index} className={'ml-2'}>
+          {voting}
         </div>
       ))}
     </>

@@ -18,6 +18,10 @@
     }
   },
   "parser": "@babel/eslint-parser",
+  "env": {
+    "browser": true,
+    "es2020": true
+  },
   "rules": {
     "quotes": ["error", "single"],
     "semi": ["error", "never"],

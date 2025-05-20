@@ -1,6 +1,6 @@
 'use client'
-import { Election } from 'components/election'
+import { Elections } from 'components/elections'
 
-const Elections = () => <Election />
+const Election = () => <Elections />
 
-export default Elections
+export default Election

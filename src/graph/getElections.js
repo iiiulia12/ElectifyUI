@@ -9,6 +9,9 @@ export const GET_ELECTIONS = gql`
       startDate
       endDate
       description
+      commitments
+      merkleRoot
+      contractAddress
     }
   }
 `

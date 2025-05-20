@@ -15,9 +15,11 @@ export const ConnectButton = () => {
 
   useEffect(() => {
     const savedAccount = localStorage.getItem('walletAddress')
+
     if (savedAccount) {
       setCurrentAccount(savedAccount)
     }
+
     setIsCheckingStorage(false)
   }, [])
 
@@ -30,6 +32,7 @@ export const ConnectButton = () => {
 
     try {
       const account = await getAccount()
+
       if (!isNull(account)) {
         setCurrentAccount(account)
         localStorage.setItem('walletAddress', account)
@@ -44,7 +47,9 @@ export const ConnectButton = () => {
     }
   }
 
-  const hoverClass = isEmpty(currentAccount) ? ' hover:shadow-[0px_0px_20px_5px] hover:cursor-pointer  hover:shadow-neutral-800/50' : ''
+  const hoverClass = isEmpty(currentAccount)
+    ? ' hover:shadow-[0px_0px_20px_5px] hover:cursor-pointer  hover:shadow-neutral-800/50'
+    : ''
 
   return (
     <>
@@ -53,7 +58,7 @@ export const ConnectButton = () => {
           await handleClick()
         }}
         disabled={isWaiting || isCheckingStorage}
-        className={`flex items-center rounded-xl border bg-primary-dark/60 text-primary-light/50 hover:text-primary-light/70 ${hoverClass} h-[60%] px-2 py-1 mr-3 max-w-40 truncate ${(isWaiting || isCheckingStorage) ? 'opacity-50 cursor-not-allowed' : ''}`}>
+        className={`flex items-center rounded-xl border bg-primary-dark/60 text-primary-light/50 hover:text-primary-light/70 ${hoverClass} h-[60%] px-2 py-1 mr-3 max-w-40 truncate ${isWaiting || isCheckingStorage ? 'opacity-50 cursor-not-allowed' : ''}`}>
         <span className={'min-w-0 truncate'}>
           {isCheckingStorage ? 'Checking...' : isWaiting ? 'Connecting...' : currentAccount || 'Connect wallet'}
         </span>
