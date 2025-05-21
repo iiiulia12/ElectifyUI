@@ -24,7 +24,12 @@ export const computeCommitment = async message => {
   const signature = await signMessage(message)
   const poseidon = await circomlib.buildPoseidon()
   const trapdoor = rand128()
-  const CmtFE = Buffer.from(poseidon([BigInt(signature), trapdoor])) // field element
+  const CmtFE = Buffer.from(poseidon([BigInt(signature), trapdoor]))
+  console.log(CmtFE.toString('base64'))
 
-  return CmtFE.toString('base64')
+  return {
+    commitment: CmtFE.toString('base64'),
+    signature: BigInt(signature).toString(),
+    trapdoor: trapdoor.toString()
+  }
 }
