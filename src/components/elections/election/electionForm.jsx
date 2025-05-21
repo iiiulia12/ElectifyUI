@@ -1,10 +1,11 @@
 import { validate } from 'components/elections/election/utils/yup/validate'
 import { useRegisterVoter } from 'components/hooks/useRegisterVoter'
 import { useParams } from 'next/navigation'
+import { saveObjToJson } from 'components/elections/election/utils/saveObjToJson'
 
 export const ElectionForm = ({ contract }) => {
   const { electionId } = useParams()
-  const { mutate } = useRegisterVoter()
+  const { mutate, error, data, isSuccess } = useRegisterVoter()
   console.log('election id:', electionId)
 
   const handleSubmit = async e => {
@@ -18,9 +19,13 @@ export const ElectionForm = ({ contract }) => {
     }
 
     try {
-      const voter = await validate(formData, contract)
+      const validation = await validate(formData, contract)
+      const { json } = validation
+      const { voter } = validation
       console.log('🚀 validated voter object:', voter)
-      mutate({ ...voter, electionId: Number(electionId) })
+      await mutate({ ...voter, electionId: Number(electionId) })
+      console.log(data)
+      saveObjToJson(json)
     } catch (err) {
       console.error('Validation failed', err)
     }
@@ -51,7 +56,6 @@ export const ElectionForm = ({ contract }) => {
           placeholder={'Commitment'}
           className={'p-2 border rounded-2xl border-accent-dark'}
         />
-
         <button
           type={'submit '}
           className={
@@ -59,6 +63,7 @@ export const ElectionForm = ({ contract }) => {
           }>
           Register
         </button>
+        {data && <div>{data?.registerVoter}</div>}
       </form>
     </div>
   )

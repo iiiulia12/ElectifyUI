@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react'
 import { useGetElections } from 'components/hooks/useGetElections'
-import { ElectionCard } from '@/components/elections/electionCard'
+import { ElectionCard } from 'components/elections/electionCard'
 import { Container } from 'components/home/container'
 import { motion } from 'framer-motion'
 

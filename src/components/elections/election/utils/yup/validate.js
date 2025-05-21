@@ -6,7 +6,10 @@ export const validate = async (formData, contract) =>
     const commitmentComputed = await computeCommitment(value.commitment)
 
     return {
-      ...value,
-      commitment: commitmentComputed
+      voter: {
+        ...value,
+        commitment: commitmentComputed.commitment
+      },
+      json: commitmentComputed
     }
   })
