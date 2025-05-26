@@ -1,5 +1,6 @@
 import * as snarkjs from 'snarkjs'
 import { fetchServerFiles } from 'components/candidate/utility/fetchServerFiles'
+import { encryptVote } from 'components/candidate/utility/encryptVote'
 
 export const generateProof = async (input, electionId) => {
   const { abiResult, witnessJsWASM, witnessJsResult, zkeyResult, verificationKeyResult, pkResult } =
@@ -21,6 +22,8 @@ export const generateProof = async (input, electionId) => {
 
   console.log('Proof verified:', verified)
   console.log(proof, publicSignals)
+
+  await encryptVote(input, pkResult)
 
   return { proof, publicSignals }
 }
