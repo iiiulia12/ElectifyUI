@@ -1,5 +1,4 @@
 import crypto from 'crypto'
-import { useGetElections } from 'components/hooks/useGetElections'
 const circomlib = require('circomlibjs')
 
 const rand128 = () => BigInt('0x' + crypto.randomBytes(16).toString('hex'))

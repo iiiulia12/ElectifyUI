@@ -5,7 +5,6 @@ import { processMerkleTree } from 'components/candidate/utility/processMerkleTre
 import { useGetElections } from 'components/hooks/useGetElections'
 import { processVote } from 'components/candidate/utility/processVote'
 import { makeVoteInput } from 'components/candidate/utility/makeVoteInput'
-import { useState } from 'react'
 import { saveObjToJson } from 'components/elections/election/utils/saveObjToJson'
 import { generateProof } from 'components/candidate/utility/generateProof'
 
@@ -15,10 +14,8 @@ export const Candidate = () => {
   const candidates = data?.candidates.map(candidate => ({ id: candidate.id, ...candidate.candidateProfile }))
   const numberOfCandidates = candidates?.length || 0
   const { data: electionsData } = useGetElections({ electionsId: electionId })
-  const [input, setInput] = useState('')
 
   const handleVote = async vote => {
-    console.log(electionsData)
     const merkleDetails = await processMerkleTree(
       electionsData,
       electionId,
@@ -26,12 +23,8 @@ export const Candidate = () => {
     )
     const voteDetails = await processVote(vote, numberOfCandidates) //TODO add election id
     const voteInput = makeVoteInput(merkleDetails, voteDetails, electionId)
-    console.log(merkleDetails)
-    console.log(voteInput)
-    setInput(voteInput)
     saveObjToJson(voteInput, 'input.json')
-    console.log(input)
-    await generateProof(input, electionId)
+    await generateProof(voteInput, electionId)
   }
 
   return (
