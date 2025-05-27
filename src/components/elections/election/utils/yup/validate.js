@@ -3,7 +3,7 @@ import { computeCommitment } from 'components/elections/election/utils/computeCo
 
 export const validate = async (formData, contract) =>
   schema.validate(formData).then(async value => {
-    const commitmentComputed = await computeCommitment(value.commitment)
+    const commitmentComputed = await computeCommitment(value.cnp)
 
     return {
       voter: {

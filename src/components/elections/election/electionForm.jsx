@@ -1,12 +1,11 @@
 import { validate } from 'components/elections/election/utils/yup/validate'
 import { useRegisterVoter } from 'components/hooks/useRegisterVoter'
 import { useParams } from 'next/navigation'
-import { saveObjToJson } from 'components/elections/election/utils/saveObjToJson'
+import { saveCommitment } from 'components/elections/election/utils/saveCommitment'
 
 export const ElectionForm = ({ contract }) => {
   const { electionId } = useParams()
   const { mutate, error, data, isSuccess } = useRegisterVoter()
-  console.log('election id:', electionId)
 
   const handleSubmit = async e => {
     e.preventDefault()
@@ -14,8 +13,7 @@ export const ElectionForm = ({ contract }) => {
     const formData = {
       firstName: e.target.firstName.value,
       lastName: e.target.lastName.value,
-      cnp: e.target.cnp.value,
-      commitment: e.target.commitment.value
+      cnp: e.target.cnp.value
     }
 
     try {
@@ -24,8 +22,7 @@ export const ElectionForm = ({ contract }) => {
       const { voter } = validation
       console.log('🚀 validated voter object:', voter)
       await mutate({ ...voter, electionId: Number(electionId) })
-      console.log(data)
-      saveObjToJson(json)
+      saveCommitment(json, electionId, voter.cnp)
     } catch (err) {
       console.error('Validation failed', err)
     }
@@ -50,12 +47,6 @@ export const ElectionForm = ({ contract }) => {
           className={'p-2 border rounded-2xl border-accent-dark'}
         />
         <input type={'text'} name={'cnp'} placeholder={'CNP'} className={'p-2 border rounded-2xl border-accent-dark'} />
-        <input
-          type={'text'}
-          name={'commitment'}
-          placeholder={'Commitment'}
-          className={'p-2 border rounded-2xl border-accent-dark'}
-        />
         <button
           type={'submit '}
           className={
