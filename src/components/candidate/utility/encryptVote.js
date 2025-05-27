@@ -55,12 +55,14 @@ export const encryptVote = async (input, pk) => {
 
   const C1dec = C1.map(coord => F.toObject(coord).toString())
 
-  const ballot = {
+  const encryptedNonce = {
     C1: C1dec,
     C2: C2.toString(),
     Commit,
     N
   }
 
-  console.log('🎉 ballot_poseidon.json written', ballot)
+  console.log('encrypted nonce:', encryptedNonce)
+
+  return encryptedNonce
 }

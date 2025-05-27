@@ -6,10 +6,7 @@ export const processMerkleTree = async (data, electionId, voterCommitment) => {
   const F = poseidon.F
   const merkleRoot = data?.elections?.[0]?.merkleRoot
   const userCommitments = data?.elections?.[0]?.commitments || []
-  console.log('userCommitments', userCommitments)
   const bufLeaves = userCommitments.map(l => Buffer.from(l, 'base64'))
-
-  bufLeaves.forEach(l => console.log(poseidon.F.toString(l)))
 
   function poseidonHash(data) {
     const left = data.slice(0, 32)

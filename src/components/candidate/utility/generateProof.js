@@ -1,8 +1,8 @@
 import * as snarkjs from 'snarkjs'
 import { fetchServerFiles } from 'components/candidate/utility/fetchServerFiles'
-import { encryptVote } from 'components/candidate/utility/encryptVote'
+import { castVote } from 'components/candidate/utility/castVote'
 
-export const generateProof = async (input, electionId) => {
+export const generateProof = async (input, electionId, contractAddress) => {
   const { abiResult, witnessJsWASM, witnessJsResult, zkeyResult, verificationKeyResult, pkResult } =
     await fetchServerFiles(electionId)
   const patchedCode = witnessJsResult.replace(
@@ -19,11 +19,6 @@ export const generateProof = async (input, electionId) => {
   const { proof, publicSignals } = await snarkjs.groth16.prove(new Uint8Array(zkeyResult), witnessBuffer)
 
   const verified = await snarkjs.groth16.verify(verificationKeyResult, publicSignals, proof)
-
-  console.log('Proof verified:', verified)
-  console.log(proof, publicSignals)
-
-  await encryptVote(input, pkResult)
-
-  return { proof, publicSignals }
+  await castVote(abiResult, contractAddress, input, pkResult, proof, publicSignals, publicSignals)
+  console.log('Proof verified: ', verified)
 }
