@@ -2,10 +2,30 @@ import { validate } from 'components/elections/election/utils/yup/validate'
 import { useRegisterVoter } from 'components/hooks/useRegisterVoter'
 import { useParams } from 'next/navigation'
 import { saveCommitment } from 'components/elections/election/utils/saveCommitment'
+import { useGetElections } from 'components/hooks/useGetElections'
+import { useEffect, useMemo, useRef, useState } from 'react'
+
+function usePrevious(value) {
+  const ref = useRef()
+  useEffect(() => {
+    ref.current = value
+  }, [value])
+
+  return ref.current
+}
 
 export const ElectionForm = ({ contract }) => {
   const { electionId } = useParams()
-  const { mutate, error, data, isSuccess } = useRegisterVoter()
+  const { mutate, isSuccess } = useRegisterVoter()
+  const { data: electionsData, refetch } = useGetElections({ electionsId: electionId })
+
+  const electionCommitments = useMemo(() => electionsData?.elections?.[0]?.commitments || [], [electionsData])
+
+  const [voter, setVoter] = useState(null)
+  const [jsonData, setJsonData] = useState(null)
+  const [pendingCommitment, setPendingCommitment] = useState(null)
+
+  const prevCommitments = usePrevious(electionCommitments)
 
   const handleSubmit = async e => {
     e.preventDefault()
@@ -18,15 +38,37 @@ export const ElectionForm = ({ contract }) => {
 
     try {
       const validation = await validate(formData, contract)
-      const { json } = validation
-      const { voter } = validation
+      const { json, voter } = validation
       console.log('🚀 validated voter object:', voter)
-      await mutate({ ...voter, electionId: Number(electionId) })
-      saveCommitment(json, electionId, voter.cnp)
+
+      setJsonData(json)
+      setVoter(voter)
+      setPendingCommitment(json.commitment)
+
+      mutate(
+        { ...voter, electionId: Number(electionId) },
+        {
+          onSuccess: () => {
+            refetch()
+          }
+        }
+      )
     } catch (err) {
       console.error('Validation failed', err)
     }
   }
+
+  useEffect(() => {
+    if (
+      pendingCommitment &&
+      prevCommitments &&
+      !prevCommitments.includes(pendingCommitment) &&
+      electionCommitments.includes(pendingCommitment)
+    ) {
+      saveCommitment(jsonData, electionId, voter.cnp, electionCommitments)
+      setPendingCommitment(null)
+    }
+  }, [electionCommitments, prevCommitments, pendingCommitment, jsonData, voter, electionId])
 
   return (
     <div
@@ -54,7 +96,7 @@ export const ElectionForm = ({ contract }) => {
           }>
           Register
         </button>
-        {data && <div>{data?.registerVoter}</div>}
+        {isSuccess && <div>Voter registered successfully!</div>}
       </form>
     </div>
   )
