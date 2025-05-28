@@ -1,8 +1,9 @@
-'use client'
+import 'app/globals.css'
 import React, { useEffect, useState } from 'react'
 import moment from 'moment'
 import { motion } from 'framer-motion'
 import { useRouter } from 'next/navigation'
+import { Calendar, Clock, Info, Loader2 } from 'lucide-react'
 
 export const ElectionCard = ({ election, scale = 1 }) => {
   const router = useRouter()
@@ -25,36 +26,59 @@ export const ElectionCard = ({ election, scale = 1 }) => {
     return () => clearInterval(interval)
   }, [startTimestamp, endTimestamp])
 
-  const formattedStart = moment(startTimestamp).format('dddd, MMMM D, YYYY [at] h:mm A')
-  const formattedEnd = moment(endTimestamp).format('dddd, MMMM D, YYYY [at] h:mm A')
+  const formattedStart = moment(startTimestamp).format('dddd, MMM D YYYY [at] h:mm A')
+  const formattedEnd = moment(endTimestamp).format('dddd, MMM D YYYY [at] h:mm A')
 
   return (
     <motion.div
-      className={
-        'w-96 h-96 bg-blackish-blue/20 rounded-2xl shadow-lg p-6 m-5 relative cursor-pointer flex flex-col gap-4'
-      }
-      onClick={() => router.push(`elections/${election.id}`)}
+      className={'m-5 rounded-3xl bg-transparent border-6 border-blackish-blue/20'}
       initial={{ scale }}
       animate={{ scale }}
-      whileHover={{ scale: scale * 1.1 }}
-      transition={{ type: 'spring', stiffness: 300, damping: 25 }}>
-      <div className={'text-3xl font-semibold text-accent-light/90 h-[30%]'}>{election.name}</div>
-      <div className={'text-xl text-accent-coral/70 line-clamp-3 h-[25%]'}>{election.description}</div>
-
-      <div className={'h-[25%] text-md text-white/60'}>
-        <p>{formattedStart}</p>
-        <p>{formattedEnd}</p>
-      </div>
-
-      <div className={'absolute bottom-0 w-full left-0 px-6 mb-12'}>
-        <div className={'w-full h-4 bg-cloudy rounded-full overflow-hidden'}>
-          <div className={'h-full bg-accent-coral/70'} style={{ width: `${pct}%` }} />
+      whileHover={{ scale: scale * 1.05 }}
+      transition={{ type: 'spring', stiffness: 250, damping: 20 }}>
+      <motion.div
+        className={'w-96 h-96 bg-blackish-blue/20 rounded-2xl shadow-2xl p-6 cursor-pointer flex flex-col'}
+        onClick={() => router.push(`elections/${election.id}`)}>
+        <div className={'flex items-center mb-4'}>
+          <Info className={'w-6 h-6 text-accent-light/90 mr-2'} />
+          <h3 className={'text-2xl font-bold text-accent-light/90 truncate'}>{election.name}</h3>
         </div>
-        <div className={'flex justify-between'}>
-          <p className={'text-xs text-right mt-1 text-accent-coral/70'}>{election.status}</p>
-          <p className={'text-xs text-right mt-1 text-accent-coral/70'}>{pct}%</p>
+
+        <p className={'text-md text-accent-coral/70 line-clamp-3 flex-grow mb-4'}>{election.description}</p>
+
+        <div className={'space-y-2 mb-4'}>
+          <div className={'flex items-center text-sm text-gray-400'}>
+            <Calendar className={'w-4 h-4 mr-2'} />
+            <span>{formattedStart}</span>
+          </div>
+          <div className={'flex items-center text-sm text-gray-400'}>
+            <Clock className={'w-4 h-4 mr-2'} />
+            <span>{formattedEnd}</span>
+          </div>
         </div>
-      </div>
+
+        <div className={'relative mt-auto'}>
+          <div className={'w-full h-3 bg-gray-600 rounded-full overflow-hidden mb-2'}>
+            <motion.div
+              className={'h-full bg-accent-coral'}
+              initial={{ width: 0 }}
+              animate={{ width: `${pct}%` }}
+              transition={{ duration: 1 }}
+            />
+          </div>
+          <div className={'flex justify-between items-center text-xs text-gray-300'}>
+            <span>{election.status}</span>
+            <div className={'flex items-center'}>
+              {pct < 100 ? (
+                <Loader2 className={'w-4 h-4 animate-spin mr-1'} />
+              ) : (
+                <Info className={'w-4 h-4 mr-1 text-green-400'} />
+              )}
+              <span>{pct}%</span>
+            </div>
+          </div>
+        </div>
+      </motion.div>
     </motion.div>
   )
 }
