@@ -4,6 +4,7 @@ import { useParams } from 'next/navigation'
 import { saveCommitment } from 'components/elections/election/utils/saveCommitment'
 import { useGetElections } from 'components/hooks/useGetElections'
 import { useEffect, useMemo, useRef, useState } from 'react'
+import { DisplayResponse } from 'components/elections/election/displayResponse'
 
 function usePrevious(value) {
   const ref = useRef()
@@ -16,9 +17,8 @@ function usePrevious(value) {
 
 export const ElectionForm = ({ contract }) => {
   const { electionId } = useParams()
-  const { mutate, isSuccess } = useRegisterVoter()
+  const { mutate, isSuccess, data } = useRegisterVoter()
   const { data: electionsData, refetch } = useGetElections({ electionsId: electionId })
-
   const electionCommitments = useMemo(() => electionsData?.elections?.[0]?.commitments || [], [electionsData])
 
   const [voter, setVoter] = useState(null)
@@ -39,36 +39,23 @@ export const ElectionForm = ({ contract }) => {
     try {
       const validation = await validate(formData, contract)
       const { json, voter } = validation
-      console.log('🚀 validated voter object:', voter)
+      console.log('validated voter object:', voter)
 
       setJsonData(json)
       setVoter(voter)
       setPendingCommitment(json.commitment)
 
-      mutate(
-        { ...voter, electionId: Number(electionId) },
-        {
-          onSuccess: () => {
-            refetch()
-          }
-        }
-      )
+      mutate({ ...voter, electionId: Number(electionId) })
     } catch (err) {
       console.error('Validation failed', err)
     }
   }
 
   useEffect(() => {
-    if (
-      pendingCommitment &&
-      prevCommitments &&
-      !prevCommitments.includes(pendingCommitment) &&
-      electionCommitments.includes(pendingCommitment)
-    ) {
-      saveCommitment(jsonData, electionId, voter.cnp, electionCommitments)
-      setPendingCommitment(null)
+    if (data?.registerVoter?.success === true) {
+      saveCommitment(jsonData, electionId, voter?.cnp)
     }
-  }, [electionCommitments, prevCommitments, pendingCommitment, jsonData, voter, electionId])
+  }, [data, electionId, jsonData, voter?.cnp])
 
   return (
     <div
@@ -92,11 +79,11 @@ export const ElectionForm = ({ contract }) => {
         <button
           type={'submit '}
           className={
-            'mt-6 text-accent-dark/70 bg-cloudy/10 text-lg rounded-xl hover:shadow-[0px_0px_20px_5px] hover:cursor-pointer hover:bg-cloudy/5 hover:shadow-accent-dark/40'
+            'mt-6 p-1 text-accent-dark/70 bg-cloudy/10 text-lg rounded-xl hover:shadow-[0px_0px_20px_5px] hover:cursor-pointer hover:bg-cloudy/5 hover:shadow-accent-dark/40'
           }>
           Register
         </button>
-        {isSuccess && <div>Voter registered successfully!</div>}
+        <DisplayResponse isSuccess={isSuccess} data={data} />
       </form>
     </div>
   )
