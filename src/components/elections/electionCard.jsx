@@ -50,7 +50,10 @@ export const ElectionCard = ({ election, scale = 1 }) => {
         <div className={'w-full h-4 bg-cloudy rounded-full overflow-hidden'}>
           <div className={'h-full bg-accent-coral/70'} style={{ width: `${pct}%` }} />
         </div>
-        <p className={'text-xs text-right mt-1 text-accent-coral/70'}>{pct}%</p>
+        <div className={'flex justify-between'}>
+          <p className={'text-xs text-right mt-1 text-accent-coral/70'}>{election.status}</p>
+          <p className={'text-xs text-right mt-1 text-accent-coral/70'}>{pct}%</p>
+        </div>
       </div>
     </motion.div>
   )
