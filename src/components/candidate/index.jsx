@@ -19,7 +19,7 @@ export const Candidate = () => {
       civilStatus: c.civilStatus,
       ...c.candidateProfile
     })) || []
-  const numberOfCandidates = candidates.length
+  const maxId = candidates.length ? Math.max(...candidates.map(c => c.id)) : null
   const { data: electionsData } = useGetElections({ electionsId: electionId })
 
   const handleVote = async candidateId => {
@@ -38,14 +38,14 @@ export const Candidate = () => {
     const json = JSON.parse(text)
 
     const merkleDetails = await processMerkleTree(electionsData, electionId, json.commitment)
-    const voteDetails = await processVote(candidateId, numberOfCandidates, electionId)
+    const voteDetails = await processVote(candidateId, maxId, electionId)
     const voteInput = makeVoteInput(merkleDetails, voteDetails, electionId, json)
     const contractAddress = electionsData?.elections?.[0]?.contractAddress || ''
     await generateProof(voteInput, electionId, contractAddress)
   }
 
   return (
-    <div className={'flex flex-wrap justify-center gap-12 p-6 my-32 w-full h-[80vh] '}>
+    <div className={'flex flex-wrap justify-center gap-12 p-6 my-32 w-full h-full '}>
       {candidates.map(candidate => (
         <div
           key={candidate.id}
