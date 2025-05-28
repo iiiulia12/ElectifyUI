@@ -2,30 +2,15 @@ import { validate } from 'components/elections/election/utils/yup/validate'
 import { useRegisterVoter } from 'components/hooks/useRegisterVoter'
 import { useParams } from 'next/navigation'
 import { saveCommitment } from 'components/elections/election/utils/saveCommitment'
-import { useGetElections } from 'components/hooks/useGetElections'
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { DisplayResponse } from 'components/elections/election/displayResponse'
 
-function usePrevious(value) {
-  const ref = useRef()
-  useEffect(() => {
-    ref.current = value
-  }, [value])
-
-  return ref.current
-}
-
-export const ElectionForm = ({ contract }) => {
+export const ElectionForm = () => {
   const { electionId } = useParams()
   const { mutate, isSuccess, data } = useRegisterVoter()
-  const { data: electionsData, refetch } = useGetElections({ electionsId: electionId })
-  const electionCommitments = useMemo(() => electionsData?.elections?.[0]?.commitments || [], [electionsData])
 
   const [voter, setVoter] = useState(null)
   const [jsonData, setJsonData] = useState(null)
-  const [pendingCommitment, setPendingCommitment] = useState(null)
-
-  const prevCommitments = usePrevious(electionCommitments)
 
   const handleSubmit = async e => {
     e.preventDefault()
@@ -37,13 +22,12 @@ export const ElectionForm = ({ contract }) => {
     }
 
     try {
-      const validation = await validate(formData, contract)
+      const validation = await validate(formData)
       const { json, voter } = validation
       console.log('validated voter object:', voter)
 
       setJsonData(json)
       setVoter(voter)
-      setPendingCommitment(json.commitment)
 
       mutate({ ...voter, electionId: Number(electionId) })
     } catch (err) {
@@ -55,7 +39,7 @@ export const ElectionForm = ({ contract }) => {
     if (data?.registerVoter?.success === true) {
       saveCommitment(jsonData, electionId, voter?.cnp)
     }
-  }, [data, electionId, jsonData, voter?.cnp])
+  }, [electionId, jsonData, voter?.cnp, data?.registerVoter?.success])
 
   return (
     <div
