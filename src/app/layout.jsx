@@ -10,7 +10,7 @@ export default function RootLayout({ children }) {
       <body>
         <Header />
         <ReactQueryProvider>
-          <div className={'h-dvh'}>{children}</div>
+          <div className={'min-h-screen'}>{children}</div>
         </ReactQueryProvider>
         <Footer />
       </body>
