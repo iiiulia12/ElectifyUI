@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { ElectionForm } from 'components/elections/election/electionForm'
 import { Candidate } from 'components/candidate'
+import { ElectionData } from 'components/elections/election/electionData'
 
 export const ElectionDetails = () => {
   const css = '!bg-cloudy/30'
@@ -16,6 +17,11 @@ export const ElectionDetails = () => {
         {toggleRegister && (
           <div className={'absolute top-0 left-0 w-1/2 h-full flex justify-center items-center'}>
             <ElectionForm />
+          </div>
+        )}
+        {!toggleRegister && (
+          <div className={'absolute top-0 right-0 w-1/2 h-full flex justify-center items-center'}>
+            <ElectionData />
           </div>
         )}
         <motion.div
