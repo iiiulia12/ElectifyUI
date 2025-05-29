@@ -1,10 +1,8 @@
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts'
+import { makeChartData } from 'components/elections/results/utility/makeChartData'
 
 export const ResultsBarChart = ({ candidateResults }) => {
-  const data = candidateResults.map(c => ({
-    name: `${c.firstName} ${c.lastName}`,
-    votes: c.votes
-  }))
+  const data = makeChartData(candidateResults)
 
   return (
     <div className={'w-full h-96 my-12'}>

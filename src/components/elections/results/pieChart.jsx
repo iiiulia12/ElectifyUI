@@ -1,21 +1,19 @@
 'use client'
 import React from 'react'
 import { PieChart, Pie, Cell, Tooltip, Legend, ResponsiveContainer } from 'recharts'
-import { CHART_COLORS } from 'components/elections/results/chartColor'
+import { CHART_COLORS } from 'components/elections/results/utility/chartColor'
+import { makeChartData } from 'components/elections/results/utility/makeChartData'
 
 export const ResultsPieChart = ({ candidateResults }) => {
-  const data = candidateResults.map(c => ({
-    name: `${c.firstName} ${c.lastName}`,
-    value: c.votes
-  }))
+  const data = makeChartData(candidateResults)
 
   return (
-    <div className={'w-full h-128'}>
+    <div className={'w-full h-128 mb-8'}>
       <ResponsiveContainer>
         <PieChart>
           <Pie
             data={data}
-            dataKey={'value'}
+            dataKey={'votes'}
             nameKey={'name'}
             outerRadius={'80%'}
             label={({ name, percent }) => `${name} (${(percent * 100).toFixed(0)}%)`}>
