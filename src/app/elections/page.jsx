@@ -1,5 +1,5 @@
 'use client'
-import { Elections } from 'components/elections'
+import { Elections } from '@/components/elections/electionCarousel'
 
 const Election = () => <Elections />
 

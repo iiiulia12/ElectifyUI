@@ -2,9 +2,9 @@ import { Container } from 'components/home/container'
 import { Button } from '@headlessui/react'
 import { useState } from 'react'
 import { motion } from 'framer-motion'
-import { ElectionForm } from 'components/elections/election/electionForm'
+import { ElectionForm } from 'components/elections/electionDetails/electionForm'
 import { Candidate } from 'components/candidate'
-import { ElectionData } from 'components/elections/election/electionData'
+import { ElectionData } from 'components/elections/electionDetails/electionData'
 
 export const ElectionDetails = () => {
   const css = '!bg-cloudy/30'

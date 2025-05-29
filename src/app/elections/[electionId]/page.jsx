@@ -1,6 +1,6 @@
 'use client'
 
-import { ElectionDetails } from 'components/elections/election'
+import { ElectionDetails } from 'components/elections/electionDetails'
 
 const Election = () => <ElectionDetails />
 

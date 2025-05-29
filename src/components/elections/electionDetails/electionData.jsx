@@ -1,11 +1,12 @@
 import React from 'react'
 import moment from 'moment'
 import { useGetElections } from 'components/hooks/useGetElections'
-import { useParams } from 'next/navigation'
+import { useParams, useRouter } from 'next/navigation'
 
 export const ElectionData = () => {
   const { electionId } = useParams()
   const { data, isFetching, error } = useGetElections({ electionsId: electionId })
+  const router = useRouter()
 
   if (isFetching) {
     return (
@@ -64,6 +65,18 @@ export const ElectionData = () => {
             <p className={'text-sm text-gray-600'}>
               Contract Address: <span className={'font-mono text-xs break-all'}>{election.contractAddress}</span>
             </p>
+          </div>
+        )}
+
+        {election.status === 'closed' && (
+          <div className={'mt-4'}>
+            <button
+              onClick={() => router.push(`/elections/${electionId}/results`)}
+              className={
+                'px-4 py-2 bg-navy-blue/90 text-white rounded-xl shadow hover:bg-navy-blue hover:cursor-pointer transition'
+              }>
+              View Results
+            </button>
           </div>
         )}
       </div>

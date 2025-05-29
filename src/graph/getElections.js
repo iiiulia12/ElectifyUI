@@ -12,6 +12,7 @@ export const GET_ELECTIONS = gql`
       commitments
       merkleRoot
       contractAddress
+      results
     }
   }
 `

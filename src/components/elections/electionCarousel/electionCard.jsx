@@ -72,7 +72,7 @@ export const ElectionCard = ({ election, scale = 1 }) => {
               {pct < 100 ? (
                 <Loader2 className={'w-4 h-4 animate-spin mr-1'} />
               ) : (
-                <Info className={'w-4 h-4 mr-1 text-green-400'} />
+                <Info className={'w-4 h-4 mr-1 text-accent-light/90 '} />
               )}
               <span>{pct}%</span>
             </div>
