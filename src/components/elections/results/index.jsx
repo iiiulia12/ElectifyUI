@@ -52,13 +52,11 @@ export const Results = () => {
     votes: voteCountMap[candidate.id] || 0
   }))
 
-  console.log(candidateResults)
-
   return (
     <>
       <ResultsList title={electionData?.elections?.[0]?.name} results={candidateResults} />
-      <ResultsBarChart candidateResults={candidateResults} />
-      <ResultsPieChart candidateResults={candidateResults} />
+      {results?.length > 0 && <ResultsBarChart candidateResults={candidateResults} />}
+      {results?.length > 0 && <ResultsPieChart candidateResults={candidateResults} />}
     </>
   )
 }
