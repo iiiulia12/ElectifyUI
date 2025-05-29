@@ -15,9 +15,6 @@ export const Header = () => (
         <Link href={'/elections'} className={'hover:text-deep-ocean transition-colors'}>
           Elections
         </Link>
-        <Link href={'/results'} className={'hover:text-deep-ocean transition-colors'}>
-          Results
-        </Link>
       </div>
 
       <div className={'ml-auto'}>
