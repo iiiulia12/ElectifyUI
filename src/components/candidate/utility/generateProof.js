@@ -19,6 +19,7 @@ export const generateProof = async (input, electionId, contractAddress) => {
   const { proof, publicSignals } = await snarkjs.groth16.prove(new Uint8Array(zkeyResult), witnessBuffer)
 
   const verified = await snarkjs.groth16.verify(verificationKeyResult, publicSignals, proof)
-  await castVote(abiResult, contractAddress, input, pkResult, proof, publicSignals, publicSignals)
+  await castVote(abiResult, contractAddress, input, pkResult, proof, publicSignals)
   console.log('Proof verified: ', verified)
+  console.log('Voted with input: ', input)
 }

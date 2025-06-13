@@ -1,7 +1,7 @@
-import { validate } from '@/components/elections/electionDetails/utils/yup/validate'
+import { validate } from 'components/elections/electionDetails/utils/yup/validate'
 import { useRegisterVoter } from 'components/hooks/useRegisterVoter'
 import { useParams } from 'next/navigation'
-import { saveCommitment } from '@/components/elections/electionDetails/utils/saveCommitment'
+import { saveCommitment } from 'components/elections/electionDetails/utils/saveCommitment'
 import { useEffect, useState } from 'react'
 import { DisplayResponse } from 'components/elections/electionDetails/displayResponse'
 

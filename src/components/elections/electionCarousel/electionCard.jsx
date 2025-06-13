@@ -60,7 +60,7 @@ export const ElectionCard = ({ election, scale = 1 }) => {
         <div className={'relative mt-auto'}>
           <div className={'w-full h-3 bg-gray-600 rounded-full overflow-hidden mb-2'}>
             <motion.div
-              className={'h-full bg-accent-coral'}
+              className={'h-full bg-accent-dark/70'}
               initial={{ width: 0 }}
               animate={{ width: `${pct}%` }}
               transition={{ duration: 1 }}
