@@ -1,4 +1,4 @@
-FROM node:lts-slim
+FROM node:alpine
 
 WORKDIR srv/electify-ui
 
