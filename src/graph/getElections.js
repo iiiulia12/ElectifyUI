@@ -1,8 +1,8 @@
 import { gql } from '@apollo/client'
 
 export const GET_ELECTIONS = gql`
-  query Elections {
-    elections {
+  query Elections($electionsId: ID) {
+    elections(id: $electionsId) {
       id
       name
       status
@@ -12,6 +12,7 @@ export const GET_ELECTIONS = gql`
       commitments
       merkleRoot
       contractAddress
+      results
     }
   }
 `

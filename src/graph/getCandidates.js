@@ -1,8 +1,8 @@
 import { gql } from '@apollo/client'
 
 export const GET_CANDIDATES = gql`
-  query Candidates {
-    candidates {
+  query Candidates($electionId: ID) {
+    candidates(electionId: $electionId) {
       id
       civilStatus
       education

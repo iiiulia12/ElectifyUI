@@ -1,11 +1,20 @@
-export const vote = async (contract, web3, name) => {
-  const accounts = await web3.eth.getAccounts()
-  const sender = accounts[2]
+import { getContract } from 'contract/getContract'
+import { getAccount } from 'contract/getAccount'
 
-  // await contract.methods.createElection('election1', 1740949200, 1741208400).send({ from: sender })
-  // await contract.methods.createElection('election1', 1740949200, 1741208400).send({ from: sender })
+export const vote = async (abi, address, pA, pB, pC, pubSignals, c1x, c1y, c2) => {
+  const contract = await getContract(address, abi)
+  const sender = await getAccount()
 
-  await contract.methods.accreditVoter(1, sender).send({ from: sender })
+  try {
+    const receipt = await contract.methods.castVote(pA, pB, pC, pubSignals, c1x, c1y, c2).send({ from: sender })
 
-  await contract.methods.vote(1, name).send({ from: sender })
+    if (receipt.status) {
+      console.log('castVote succeeded!')
+    }
+
+    return receipt
+  } catch (err) {
+    console.error('castVote failed with error:', err)
+    throw err
+  }
 }

@@ -14,6 +14,10 @@ export const REGISTER_VOTER = gql`
       lastName: $lastName
       commitment: $commitment
       electionId: $electionId
-    )
+    ) {
+      success
+      message
+      code
+    }
   }
 `
