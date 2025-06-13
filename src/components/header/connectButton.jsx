@@ -3,6 +3,8 @@ import { useState, useEffect } from 'react'
 import { getAccount } from 'contract/getAccount'
 import { isEmpty, isNull } from 'lodash'
 import { Modal } from 'components/modal'
+import { motion } from 'framer-motion'
+import { Wallet, Loader2 } from 'lucide-react'
 
 const MESSAGE = 'Please install Metamask to continue..'
 const TIMEOUT_DURATION = 30000 // 30 seconds timeout
@@ -47,22 +49,37 @@ export const ConnectButton = () => {
     }
   }
 
-  const hoverClass = isEmpty(currentAccount)
-    ? ' hover:shadow-[0px_0px_20px_5px] hover:cursor-pointer  hover:shadow-neutral-800/50'
-    : ''
+  const isConnected = !isEmpty(currentAccount)
 
   return (
     <>
-      <button
-        onClick={async () => {
-          await handleClick()
-        }}
+      <motion.button
+        onClick={handleClick}
         disabled={isWaiting || isCheckingStorage}
-        className={`flex items-center rounded-xl border bg-primary-dark/60 text-primary-light/50 hover:text-primary-light/70 ${hoverClass} h-[60%] px-2 py-1 mr-3 max-w-40 truncate ${isWaiting || isCheckingStorage ? 'opacity-50 cursor-not-allowed' : ''}`}>
-        <span className={'min-w-0 truncate'}>
-          {isCheckingStorage ? 'Checking...' : isWaiting ? 'Connecting...' : currentAccount || 'Connect wallet'}
+        className={`flex items-center gap-2 rounded-xl font-medium px-4 py-2 transition-all duration-200 ${
+          isConnected 
+            ? 'bg-green-100 text-green-700 border border-green-200 hover:bg-green-200' 
+            : 'btn-primary'
+        } ${isWaiting || isCheckingStorage ? 'opacity-50 cursor-not-allowed' : ''}`}
+        whileHover={!isWaiting && !isCheckingStorage ? { scale: 1.02 } : {}}
+        whileTap={!isWaiting && !isCheckingStorage ? { scale: 0.98 } : {}}
+      >
+        {isWaiting ? (
+          <Loader2 className="w-4 h-4 animate-spin" />
+        ) : (
+          <Wallet className="w-4 h-4" />
+        )}
+        <span className={'min-w-0 truncate max-w-32'}>
+          {isCheckingStorage 
+            ? 'Checking...' 
+            : isWaiting 
+            ? 'Connecting...' 
+            : currentAccount 
+            ? `${currentAccount.slice(0, 6)}...${currentAccount.slice(-4)}`
+            : 'Connect Wallet'
+          }
         </span>
-      </button>
+      </motion.button>
       {isModalOpen && <Modal text={MESSAGE} closeModal={setIsModalOpen} />}
     </>
   )
