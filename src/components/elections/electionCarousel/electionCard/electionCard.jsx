@@ -38,7 +38,7 @@ export const ElectionCard = ({ election, scale = 1 }) => {
         onClick={() => router.push(`elections/${election.id}`)}
         whileTap={{ scale: 0.1 }}>
         <div
-          className={`h-1 w-full bg-gradient-to-r ${pct === 100 ? 'from-green-400 to-emerald-500' : pct === 0 ? 'from-blue-400 to-indigo-500' : 'from-orange-400 to-red-500'}`}
+          className={`h-1 w-full bg-gradient-to-r ${pct === 100 ? 'from-green-400 to-emerald-500' : pct === 0 ? 'from-blue-400 to-green-500' : 'from-orange-400 to-red-500'}`}
         />
 
         <div className={'p-8 h-full flex flex-col'}>

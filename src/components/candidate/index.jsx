@@ -1,13 +1,11 @@
-import React, { useRef } from 'react'
+import React from 'react'
 import { useGetCandidates } from 'components/hooks/useGetCandidates'
 import { useParams } from 'next/navigation'
-import { Button } from '@headlessui/react'
-import { processMerkleTree } from 'components/candidate/utility/processMerkleTree'
+import { handleVote } from 'components/candidate/utility/handleVote'
 import { useGetElections } from 'components/hooks/useGetElections'
-import { processVote } from 'components/candidate/utility/processVote'
-import { makeVoteInput } from 'components/candidate/utility/makeVoteInput'
-import { generateProof } from 'components/candidate/utility/generateProof'
-import moment from 'moment/moment'
+import { motion } from 'framer-motion'
+import { CandidateCard } from 'components/candidate/candidateCard'
+import { FooterNotice } from 'components/candidate/footerNotice'
 
 export const Candidate = () => {
   const { electionId } = useParams()
@@ -22,57 +20,42 @@ export const Candidate = () => {
   const maxId = candidates.length ? Math.max(...candidates.map(c => c.id)) : null
   const { data: electionsData } = useGetElections({ electionsId: electionId })
 
-  const handleVote = async candidateId => {
-    const [handle] = await window.showOpenFilePicker({
-      types: [
-        {
-          description: 'Voter JSON',
-          accept: { 'application/json': ['.json'] }
-        }
-      ],
-      multiple: false
-    })
-    const file = await handle.getFile()
+  const castVote = async candidateId => {
+    await handleVote(candidateId, electionsData, electionId, maxId)
+  }
 
-    const text = await file.text()
-    const json = JSON.parse(text)
-
-    const merkleDetails = await processMerkleTree(electionsData, electionId, json.commitment)
-    const voteDetails = await processVote(candidateId, maxId, electionId)
-    const voteInput = makeVoteInput(merkleDetails, voteDetails, electionId, json)
-    const contractAddress = electionsData?.elections?.[0]?.contractAddress || ''
-    await generateProof(voteInput, electionId, contractAddress)
+  if (!candidates.length) {
+    return (
+      <div className={'flex justify-center items-center py-20'}>
+        <div
+          className={
+            'bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-lg border border-white/20 rounded-2xl p-8'
+          }>
+          <span className={'text-white/80 text-lg'}>No candidates found for this election.</span>
+        </div>
+      </div>
+    )
   }
 
   return (
-    <div className={'flex flex-wrap justify-center gap-12 p-6 my-32 w-full h-full '}>
-      {candidates.map(candidate => (
-        <div
-          key={candidate.id}
-          className={
-            'w-full md:w-1/2 lg:w-1/3 xl:w-1/4 bg-white rounded-2xl shadow-lg overflow-hidden flex flex-col justify-between'
-          }>
-          <div className={'p-6 flex-1'}>
-            <h3 className={'text-xl font-semibold mb-4'}>
-              {candidate.firstName} {candidate.lastName}
-            </h3>
-            <p className={'text-sm text-gray-500 mb-2'}>Academic Qualification: {candidate.education}</p>
-            <p className={'text-sm text-gray-500 mb-4'}>Marital Status: {candidate.civilStatus}</p>
-            <p className={'text-sm text-gray-500 mb-4'}>
-              Date of birth: {moment(Number(candidate.dateOfBirth)).format('dddd, MMMM D, YYYY ')}
-            </p>
-          </div>
-          <div className={'p-4'}>
-            <Button
-              onClick={() => handleVote(candidate.id)}
-              className={
-                'w-full py-3 bg-accent-light text-white rounded-xl hover:bg-accent-dark hover: cursor-pointer'
-              }>
-              Vote
-            </Button>
-          </div>
-        </div>
-      ))}
-    </div>
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.6 }}
+      className={'max-w-7xl mx-auto'}>
+      <div className={'text-center mb-12'}>
+        <h2 className={'text-4xl font-bold text-light-sky-blue mb-4'}>Election Candidates</h2>
+        <p className={'text-xl text-light-sky-blue/90 max-w-2xl mx-auto'}>
+          Select your preferred candidate and cast your secure, blockchain-verified vote
+        </p>
+      </div>
+
+      <div className={'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8'}>
+        {candidates.map((candidate, index) => (
+          <CandidateCard key={index} candidate={candidate} index={index} castVote={castVote} />
+        ))}
+      </div>
+      <FooterNotice />
+    </motion.div>
   )
 }

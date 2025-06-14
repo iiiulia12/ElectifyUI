@@ -1,4 +1,4 @@
-import { saveObjToJson } from '@/components/elections/electionDetails/utils/saveObjToJson'
+import { saveObjToJson } from 'components/elections/electionDetails/utils/saveObjToJson'
 
 export const saveCommitment = (commitment, electionId, cnp) => {
   const storageKey = `voterCommitment_${cnp}_election${electionId}`

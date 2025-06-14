@@ -31,6 +31,12 @@ export default {
         'accent-light': '#fdba74',
         'accent-dark': '#ea580c',
 
+        'accent-red': '#920a0a',
+        'accent-red-light': '#B83E3E',
+
+        'accent-pending-light': '#F09918',
+        'accent-start-pending': '#C94802',
+        yellow: '#F2F283',
         // Neutral Tones
         'neutral-50': '#f8fafc',
         'neutral-100': '#f1f5f9',
