@@ -23,6 +23,8 @@ export default {
         'secondary-teal': '#0d9488',
         'secondary-light': '#2dd4bf',
         'secondary-dark': '#0f766e',
+        'secondary-very-light': '#ccfbf7',
+        'secondary-very-dark': '#042f2c',
 
         // Accent Colors
         'accent-coral': '#f97316',
