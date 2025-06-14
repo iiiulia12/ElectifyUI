@@ -16,7 +16,7 @@ export const ElectionData = () => {
   }
 
   if (isFetching) {
-    return <LoadingElement />
+    return <LoadingElement title={'Loading election data'} />
   }
 
   const election = data?.elections?.[0]

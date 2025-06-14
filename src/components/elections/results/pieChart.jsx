@@ -3,6 +3,7 @@ import React from 'react'
 import { motion } from 'framer-motion'
 import { PieChart, Pie, Cell, Tooltip, Legend, ResponsiveContainer } from 'recharts'
 import { makeChartData } from 'components/elections/results/utility/makeChartData'
+import { GradientElement } from '@/components/home/gradientElement'
 
 const CHART_COLORS = [
   '#60a5fa', // blue-400
@@ -113,12 +114,7 @@ export const ResultsPieChart = ({ candidateResults }) => {
           }>
           Vote Breakdown
         </h2>
-        <motion.div
-          className={'w-24 h-1 bg-gradient-to-r from-blue-400 to-purple-400 mx-auto rounded-full'}
-          initial={{ width: 0 }}
-          animate={{ width: 96 }}
-          transition={{ delay: 1.0, duration: 0.8, ease: 'easeOut' }}
-        />
+        <GradientElement />
       </motion.div>
 
       <motion.div

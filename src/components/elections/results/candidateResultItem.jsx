@@ -27,17 +27,6 @@ const progressBarVariants = {
   })
 }
 
-const hoverVariants = {
-  hover: {
-    scale: 1.02,
-    y: -5,
-    transition: {
-      duration: 0.3,
-      ease: 'easeOut'
-    }
-  }
-}
-
 export const CandidateResultItem = ({ candidate, index, totalVotes }) => {
   const { id, firstName, lastName, votes } = candidate
   const percentage = totalVotes > 0 ? ((votes / totalVotes) * 100).toFixed(1) : 0
@@ -45,14 +34,13 @@ export const CandidateResultItem = ({ candidate, index, totalVotes }) => {
   return (
     <motion.div
       className={
-        'group bg-gradient-to-r from-white/10 to-white/5 backdrop-blur-lg border border-white/20 rounded-xl p-6 mb-4 hover:bg-white/15 hover:border-blue-400/40 transition-colors duration-500 hover:shadow-xl hover:shadow-blue-500/20 cursor-pointer'
+        'group bg-gradient-to-r from-white/10 to-white/5 backdrop-blur-lg border border-white/20 rounded-xl p-6 mb-4 hover:border-secondary-light/20 transition-colors duration-100 hover:shadow-xl hover:shadow-secondary-very-light/15'
       }
       variants={cardVariants}
       custom={index}
       initial={'hidden'}
       animate={'visible'}
-      whileHover={'hover'}
-      {...hoverVariants}>
+      whileHover={'hover'}>
       <div className={'flex justify-between items-center'}>
         <div className={'flex items-center space-x-4'}>
           <motion.div
