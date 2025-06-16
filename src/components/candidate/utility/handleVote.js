@@ -22,5 +22,6 @@ export const handleVote = async (candidateId, electionsData, electionId, maxId) 
   const voteDetails = await processVote(candidateId, maxId, electionId)
   const voteInput = makeVoteInput(merkleDetails, voteDetails, electionId, json)
   const contractAddress = electionsData?.elections?.[0]?.contractAddress || ''
-  await generateProof(voteInput, electionId, contractAddress)
+
+  return await generateProof(voteInput, electionId, contractAddress)
 }

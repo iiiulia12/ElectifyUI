@@ -12,14 +12,27 @@ export const generateProof = async (input, electionId, contractAddress) => {
 
   await new Function(patchedCode)()
 
-  const witnessCalculator = await window.witnessCalculatorBuilder(witnessJsWASM)
+  try {
+    const witnessCalculator = await window.witnessCalculatorBuilder(witnessJsWASM)
 
-  const witnessBuffer = await witnessCalculator.calculateWTNSBin(input, 0)
+    const witnessBuffer = await witnessCalculator.calculateWTNSBin(input, 0)
+    const { proof, publicSignals } = await snarkjs.groth16.prove(new Uint8Array(zkeyResult), witnessBuffer)
 
-  const { proof, publicSignals } = await snarkjs.groth16.prove(new Uint8Array(zkeyResult), witnessBuffer)
+    const verified = await snarkjs.groth16.verify(verificationKeyResult, publicSignals, proof)
 
-  const verified = await snarkjs.groth16.verify(verificationKeyResult, publicSignals, proof)
-  await castVote(abiResult, contractAddress, input, pkResult, proof, publicSignals)
-  console.log('Proof verified: ', verified)
-  console.log('Voted with input: ', input)
+    console.log('Proof verified: ', verified)
+    console.log('Voted with input: ', input)
+
+    return await castVote(abiResult, contractAddress, input, pkResult, proof, publicSignals)
+  } catch (error) {
+    console.error('ZK Proof generation/verification error:', error)
+
+    return {
+      success: false,
+      message: 'An error occurred during ZK proof generation or verification.',
+      sentValues: null,
+      receiptSummary: null,
+      error
+    }
+  }
 }

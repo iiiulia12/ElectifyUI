@@ -9,6 +9,6 @@ export const castVote = async (abiResult, contractAddress, input, pkResult, proo
   const json = `[${clean}]`
   const [pA, pB, pC, pubSignals] = JSON.parse(json)
   const [c1x, c1y] = encryptedNonce.C1
-  console.log(pA, pB, pC, pubSignals)
-  await vote(abiResult, contractAddress, pA, pB, pC, pubSignals, c1x, c1y, encryptedNonce.C2)
+
+  return await vote(abiResult, contractAddress, pA, pB, pC, pubSignals, c1x, c1y, encryptedNonce.C2)
 }

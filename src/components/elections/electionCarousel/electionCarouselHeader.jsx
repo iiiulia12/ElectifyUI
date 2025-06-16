@@ -12,7 +12,7 @@ export const ElectionCarouselHeader = ({ elections }) => (
         className={
           'text-5xl md:text-6xl font-black bg-gradient-to-r from-white via-light-sky-blue to-secondary-very-light bg-clip-text text-transparent'
         }>
-        Active Elections
+        Elections
       </h2>
     </div>
 
