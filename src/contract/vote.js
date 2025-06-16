@@ -37,13 +37,15 @@ export const vote = async (abi, address, pA, pB, pC, pubSignals, c1x, c1y, c2) =
       receipt
     }
   } catch (err) {
-    console.error('castVote failed:', err)
+    console.log('castVote failed:', err)
+    const match = err?.cause?.message.match(/reverted with reason string '([^']+)'/)
+    const reason = match ? match[1] : null
 
     return {
       success: false,
       message: 'An error occurred while sending your vote.',
       sentValues: { pA, pB, pC, pubSignals, c1x, c1y, c2, from: sender },
-      error: err
+      error: reason || err
     }
   }
 }

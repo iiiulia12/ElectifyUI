@@ -13,6 +13,7 @@ export const generateProof = async (input, electionId, contractAddress) => {
   await new Function(patchedCode)()
 
   try {
+    console.log('input: ', input)
     const witnessCalculator = await window.witnessCalculatorBuilder(witnessJsWASM)
 
     const witnessBuffer = await witnessCalculator.calculateWTNSBin(input, 0)

@@ -3,7 +3,7 @@ import moment from 'moment/moment'
 import React from 'react'
 import { GradientButton } from 'components/home/gradientButton'
 
-export const CandidateCard = ({ candidate, index, castVote }) => (
+export const CandidateCard = ({ candidate, castVote }) => (
   <motion.div
     key={candidate.id}
     initial={{ opacity: 0, y: 30 }}
@@ -59,7 +59,7 @@ export const CandidateCard = ({ candidate, index, castVote }) => (
         'bg-gradient-to-r  from-secondary-very-light/15 to-secondary-very-light/20 w-full rounded-xl  text-deep-ocean/20 hover:text-white/90 '
       }
       outerCss={'w-full bg-gradient-to-r from-white/10 to-white/15 rounded-xl'}
-      handleOnClick={() => castVote(index)}
+      handleOnClick={() => castVote(candidate?.id)}
     />
   </motion.div>
 )

@@ -6,8 +6,7 @@ import { useGetElections } from 'components/hooks/useGetElections'
 import { motion } from 'framer-motion'
 import { CandidateCard } from 'components/candidate/candidateCard'
 import { FooterNotice } from 'components/candidate/footerNotice'
-import { Modal } from 'components/modal'
-import { makeVoteResultText } from 'components/candidate/utility/makeVoteResultText'
+import { VoteModal } from 'components/candidate/voteModal'
 
 export const Candidate = () => {
   const { electionId } = useParams()
@@ -27,8 +26,7 @@ export const Candidate = () => {
 
   const castVote = async candidateId => {
     const result = await handleVote(candidateId, electionsData, electionId, maxId)
-    const message = makeVoteResultText(result)
-    setModalMessage(message)
+    setModalMessage(result)
     setIsModalOpen(true)
   }
 
@@ -47,7 +45,6 @@ export const Candidate = () => {
 
   return (
     <>
-      {' '}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -62,12 +59,12 @@ export const Candidate = () => {
 
         <div className={'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8'}>
           {candidates.map((candidate, index) => (
-            <CandidateCard key={index} candidate={candidate} index={index} castVote={castVote} />
+            <CandidateCard key={index} candidate={candidate} castVote={castVote} />
           ))}
         </div>
         <FooterNotice />
       </motion.div>
-      {isModalOpen && <Modal text={modalMessage} closeModal={setIsModalOpen} />}
+      {isModalOpen && <VoteModal closeModal={setIsModalOpen} result={modalMessage} />}
     </>
   )
 }
