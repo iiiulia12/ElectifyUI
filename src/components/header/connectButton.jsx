@@ -63,7 +63,11 @@ export const ConnectButton = () => {
           {isCheckingStorage ? 'Checking...' : isWaiting ? 'Connecting...' : currentAccount || 'Connect wallet'}
         </span>
       </button>
-      {isModalOpen && <Modal text={MESSAGE} closeModal={setIsModalOpen} />}
+      {isModalOpen && (
+        <Modal closeModal={setIsModalOpen}>
+          <div> {MESSAGE}</div>
+        </Modal>
+      )}
     </>
   )
 }

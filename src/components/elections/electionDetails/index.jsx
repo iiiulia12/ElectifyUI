@@ -1,42 +1,58 @@
+import React from 'react'
 import { Container } from 'components/home/container'
-import { Button } from '@headlessui/react'
 import { useState } from 'react'
-import { motion } from 'framer-motion'
-import { ElectionForm } from 'components/elections/electionDetails/electionForm'
+import { motion, AnimatePresence } from 'framer-motion'
+import { ElectionForm } from 'components/elections/electionDetails/electionForm/electionForm'
 import { Candidate } from 'components/candidate'
-import { ElectionData } from 'components/elections/electionDetails/electionData'
+import { ElectionData } from 'components/elections/electionDetails/electionsData/electionData'
+import { BackgroundCirclesEffect } from 'components/home/backgroundCirclesEffect'
+import { GradientButton } from 'components/home/gradientButton'
 
 export const ElectionDetails = () => {
-  const css = '!bg-cloudy/30'
-  const hoverClass = ' hover:shadow-[0px_0px_40px_5px] hover:cursor-pointer  hover:shadow-deep-ocean/50'
   const [toggleRegister, setToggleRegister] = useState(false)
+  const containerCss = 'bg-gradient-to-br from-blackish-blue  via-midnight-blue to-navy-blue'
 
   return (
-    <>
-      <Container css={css}>
-        {toggleRegister && (
-          <div className={'absolute top-0 left-0 w-1/2 h-full flex justify-center items-center'}>
-            <ElectionForm />
-          </div>
-        )}
-        {!toggleRegister && (
-          <div className={'absolute top-0 right-0 w-1/2 h-full flex justify-center items-center'}>
-            <ElectionData />
-          </div>
-        )}
-        <motion.div
-          initial={{ x: '0%' }}
-          animate={{ x: toggleRegister ? '100%' : '0%' }}
-          transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-          className={'w-1/2 rounded-2xl h-full flex flex-col items-center justify-center bg-midnight-blue/85 '}>
-          <Button
-            onClick={() => setToggleRegister(prev => !prev)}
-            className={`flex items-center px-6 py-3 rounded-xl text-2xl bg-dark-cloudy/20 text-accent-light/70 hover:text-primary-light/70 ${hoverClass} `}>
-            Register
-          </Button>
-        </motion.div>
-      </Container>
-      <Candidate />
-    </>
+    <Container css={containerCss}>
+      <BackgroundCirclesEffect />
+
+      <div className={'relative z-10 p-10'}>
+        <div className={'mb-12'}>
+          <ElectionData />
+        </div>
+
+        <AnimatePresence mode={'wait'}>
+          {toggleRegister ? (
+            <motion.div
+              key={'form'}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ duration: 0.5 }}
+              className={'mb-8'}>
+              <ElectionForm />
+            </motion.div>
+          ) : (
+            <motion.div
+              key={'candidates'}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ duration: 0.5 }}
+              className={'mb-8'}>
+              <Candidate />
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        <div className={'flex justify-center mt-12'}>
+          <GradientButton
+            handleOnClick={() => setToggleRegister(prev => !prev)}
+            title={toggleRegister ? 'View Candidates' : 'Register to Vote'}
+            outerCss={'shadow-lg hover:shadow-xl hover:shadow-secondary-dark/25 '}
+          />
+        </div>
+      </div>
+    </Container>
   )
 }
