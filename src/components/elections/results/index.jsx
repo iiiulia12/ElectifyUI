@@ -2,11 +2,29 @@
 
 import React from 'react'
 import { useParams } from 'next/navigation'
+import { motion, AnimatePresence } from 'framer-motion'
 import { useGetElections } from 'components/hooks/useGetElections'
 import { useGetCandidates } from 'components/hooks/useGetCandidates'
 import { ResultsList } from 'components/elections/results/resultsList'
 import { ResultsBarChart } from 'components/elections/results/barChart'
 import { ResultsPieChart } from 'components/elections/results/pieChart'
+import { Container } from 'components/home/container'
+import { LoadingElement } from 'components/elections/electionDetails/electionsData/loadingElement'
+import { BackgroundCirclesEffect } from '@/components/home/backgroundCirclesEffect'
+
+const pageVariants = {
+  initial: { opacity: 0, y: 20 },
+  animate: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.6,
+      ease: 'easeOut',
+      staggerChildren: 0.2
+    }
+  },
+  exit: { opacity: 0, y: -20 }
+}
 
 export const Results = () => {
   const { electionId } = useParams()
@@ -20,17 +38,10 @@ export const Results = () => {
     isFetching: isCandidatesFetching,
     error: candidatesError
   } = useGetCandidates({ electionId: Number(electionId) })
+  const containerCss = 'bg-gradient-to-br from-blackish-blue via-navy-blue to-secondary-dark'
 
   if (isElectionsFetching || isCandidatesFetching) {
-    return <div className={'text-center text-gray-500'}>Loading results...</div>
-  }
-
-  if (electionsError) {
-    return <div className={'text-center text-red-500'}>Error: {electionsError.message}</div>
-  }
-
-  if (candidatesError) {
-    return <div className={'text-center text-red-500'}>Error: {candidatesError.message}</div>
+    return <LoadingElement title={'Loading Results'} />
   }
 
   const results = electionData?.elections?.[0]?.results || []
@@ -53,10 +64,19 @@ export const Results = () => {
   }))
 
   return (
-    <>
-      <ResultsList title={electionData?.elections?.[0]?.name} results={candidateResults} />
-      {results?.length > 0 && <ResultsBarChart candidateResults={candidateResults} />}
-      {results?.length > 0 && <ResultsPieChart candidateResults={candidateResults} />}
-    </>
+    <Container css={containerCss}>
+      <BackgroundCirclesEffect />
+      <motion.div className={'relative z-10 p-10'} variants={pageVariants} initial={'initial'} animate={'animate'}>
+        <ResultsList title={electionData?.elections?.[0]?.name} results={candidateResults} />
+        <AnimatePresence mode={'wait'}>
+          {results?.length > 0 && (
+            <>
+              <ResultsBarChart candidateResults={candidateResults} />
+              <ResultsPieChart candidateResults={candidateResults} />
+            </>
+          )}
+        </AnimatePresence>
+      </motion.div>
+    </Container>
   )
 }

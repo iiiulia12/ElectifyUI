@@ -8,13 +8,13 @@ export const processVote = async (vote, maxId, electionId = 4) => {
   const F = poseidon.F
   const nonce = rand128()
   const CmtFE = poseidon([vote, nonce])
-  const Commit = F.toString(CmtFE)
+  const voteCommitment = F.toString(CmtFE)
   const N = maxId
 
   return {
     vote: vote.toString(),
     nonce: nonce.toString(),
-    Commit,
+    voteCommitment,
     N
   }
 }

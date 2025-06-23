@@ -23,12 +23,20 @@ export default {
         'secondary-teal': '#0d9488',
         'secondary-light': '#2dd4bf',
         'secondary-dark': '#0f766e',
+        'secondary-very-light': '#ccfbf7',
+        'secondary-very-dark': '#042f2c',
 
         // Accent Colors
         'accent-coral': '#f97316',
         'accent-light': '#fdba74',
         'accent-dark': '#ea580c',
 
+        'accent-red': '#920a0a',
+        'accent-red-light': '#B83E3E',
+
+        'accent-pending-light': '#F09918',
+        'accent-start-pending': '#C94802',
+        yellow: '#F2F283',
         // Neutral Tones
         'neutral-50': '#f8fafc',
         'neutral-100': '#f1f5f9',
