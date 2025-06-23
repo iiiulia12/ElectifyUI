@@ -5,15 +5,15 @@ export const encryptVote = async (input, pk) => {
   const babyjub = await circomlibEncrypt.buildBabyjub()
   const { F, Base8: G, subOrder } = babyjub
 
-  const { vote, nonce, Commit, N } = input
+  const { vote, nonce, voteCommitment, N } = input
 
   if (
     typeof vote === 'undefined' ||
     typeof nonce === 'undefined' ||
-    typeof Commit === 'undefined' ||
+    typeof voteCommitment === 'undefined' ||
     typeof N === 'undefined'
   ) {
-    console.error('input.json missing vote, nonce, Commit or N')
+    console.error('input.json missing vote, nonce, voteCommitment or N')
     process.exit(1)
   }
 
@@ -58,7 +58,7 @@ export const encryptVote = async (input, pk) => {
   const encryptedNonce = {
     C1: C1dec,
     C2: C2.toString(),
-    Commit,
+    voteCommitment,
     N
   }
 

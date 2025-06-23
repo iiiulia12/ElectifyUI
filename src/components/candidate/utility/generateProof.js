@@ -22,6 +22,7 @@ export const generateProof = async (input, electionId, contractAddress) => {
     const verified = await snarkjs.groth16.verify(verificationKeyResult, publicSignals, proof)
 
     console.log('Proof verified: ', verified)
+    console.log('Proof : ', proof)
     console.log('Voted with input: ', input)
 
     return await castVote(abiResult, contractAddress, input, pkResult, proof, publicSignals)
